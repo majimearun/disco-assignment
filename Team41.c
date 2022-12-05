@@ -49,6 +49,7 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
         fscanf(fp, "%d", &u);
         fscanf(fp, "%d", &v);
         // subtracting 1 as indexes start from 0
+        // set to 1 to show edge exists
         matrix[u-1][v-1] = 1;
         matrix[v-1][u-1] = 1;
     }
