@@ -17,6 +17,14 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
     int n, e;
     fscanf(fp, "%d", &n);
     fscanf(fp, "%d", &e);
+    if(n==0){
+        printf("No vertices in the graph\n");
+        exit(0);
+    }
+    else if(n<0){
+        printf("Invalid number of vertices, only positive integers are allowed\n");
+        exit(0);
+    }
     if(e==0){
         printf("No edges in the graph\n");
     }
@@ -24,13 +32,8 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
         printf("Invalid number of edges, only positive integers are allowed\n");
         exit(0);
     }
-    if(n<0){
-        printf("Invalid number of vertices, only positive integers are allowed\n");
-        exit(0);
-    }
-    else if(n==0){
-        printf("No vertices in the graph\n");
-    }
+
+
     int **matrix = (int **)malloc(n * sizeof(int *));
     for (int i = 0; i < n; i++)
     {
@@ -65,6 +68,10 @@ int *degreeSequence(int **matrix, int n){
         {
             if (matrix[i][j] == 1)
             {
+                if(i == j){
+                    // adding 1 extra for self loops
+                    count++;
+                }
                 count++;
             }
         }
