@@ -15,6 +15,21 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
     int n, e;
     fscanf(fp, "%d", &n);
     fscanf(fp, "%d", &e);
+    if(e==0){
+        printf("No edges in the graph\n");
+    }
+    else if(e<0){
+        printf("Invalid number of edges, only positive integers are allowed\n");
+        exit(0);
+    }
+    if(n<0){
+        printf("Invalid number of vertices, only positive integers are allowed\n");
+        exit(0);
+    }
+    else if(n==0){
+        printf("No vertices in the graph\n");
+        exit(0);
+    }
     int **matrix = (int **)malloc(n * sizeof(int *));
     for (int i = 0; i < n; i++)
     {
