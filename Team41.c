@@ -6,7 +6,9 @@
 
 struct matrixDetails
 {
+    // number of nodes = number of rows
     int n;
+    // adj matrix
     int **matrix;
 };
 
@@ -28,7 +30,6 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
     }
     else if(n==0){
         printf("No vertices in the graph\n");
-        exit(0);
     }
     int **matrix = (int **)malloc(n * sizeof(int *));
     for (int i = 0; i < n; i++)
@@ -44,6 +45,7 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
         int u, v;
         fscanf(fp, "%d", &u);
         fscanf(fp, "%d", &v);
+        // subtracting 1 as indexes start from 0
         matrix[u-1][v-1] = 1;
         matrix[v-1][u-1] = 1;
     }
@@ -68,6 +70,7 @@ int *degreeSequence(int **matrix, int n){
         }
         degree[i] = count;
     }
+    // bubble sort
     for (int i = 0; i < n; i++)
     {
         for (int j = i + 1; j < n; j++)
