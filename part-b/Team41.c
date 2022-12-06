@@ -101,7 +101,7 @@ int *degreeSequence(int **matrix, int n){
 }
 
 
-int compareMatrices(int **matrix1, int **matrix2, int n){
+int matricesAreEqual(int **matrix1, int **matrix2, int n){
     int flag = 1;
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
@@ -130,6 +130,8 @@ int findIndex(int *l, int elem){
 }
 
 void isomorphicCheck(int *a, int l, int r, int **matrix1, int **matrix2, int n){
+
+    // when l == r we have reached the ending of the swaps so a permuation has been formed
     if(l == r){
         int **newMatrix = (int **)malloc(n * sizeof(int *));
         for (int i = 0; i < n; i++)
@@ -140,16 +142,23 @@ void isomorphicCheck(int *a, int l, int r, int **matrix1, int **matrix2, int n){
                 newMatrix[i][j] = 0;
             }
         }
+        
+        // creating new matrix in the new row and column order (both same) 
+        // from the specified permutation
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 if(matrix1[i][j] == 1){
-                    int x = findIndex(a, i+1);
-                    int y = findIndex(a, j+1);
+                    // finding new position of the row and column where the 1 has to be
+                    // in the new matrix 
+                    // this will be the position of the {index + 1} element in the permuation
+                    // +1 because node count starts from 1, but index from 0
+                    int x = findIndex(a, i + 1);
+                    int y = findIndex(a, j + 1);
                     newMatrix[x][y] = 1;
                 }
             }
         }
-        if(compareMatrices(newMatrix, matrix2, n)){
+        if(matricesAreEqual(newMatrix, matrix2, n)){
             printf("Isomorphic\n");
             for(int i = 0; i < n; i++){
                 printf("%d %d\n", i + 1, a[i]);
@@ -159,9 +168,12 @@ void isomorphicCheck(int *a, int l, int r, int **matrix1, int **matrix2, int n){
 
     }
     else{
-        for(int i=l; i<=r; i++){
+        for(int i = l; i <= r; i++){
+            // swapping first element with each element of the array
             swap((a+l), (a+i));
+            // conitnuing the permutation  for subsequent elements once earlier element is fixed
             isomorphicCheck(a, l+1, r, matrix1, matrix2, n);
+            // swapping back inital element to its original place
             swap((a+l), (a+i));
         }
     }
@@ -174,11 +186,13 @@ int main(int argc, char **argv){
     // constructing the matrix
     struct matrixDetails *matrix1 = createMatrxiFromFile(argv[1]);
     struct matrixDetails *matrix2 = createMatrxiFromFile(argv[2]);
+
     // checking if the number of nodes and edges are the same
     if(matrix1->n != matrix2->n || matrix1->e != matrix2->e){
         printf("Not isomorphic\n");
         exit(0);
     }
+
     // checking if the degree sequences are the same
     int *degree1 = degreeSequence(matrix1->matrix, matrix1->n);
     int *degree2 = degreeSequence(matrix2->matrix, matrix2->n);
@@ -190,15 +204,17 @@ int main(int argc, char **argv){
         }
     }
 
-    // using backtracking to find a permutation such that a bijection exists between the graphs
-    int *a = (int *)malloc(matrix1->n * sizeof(int));
-
     // setting node order for graph 2
     // initial order {1, 2, 3, 4, ..., n}
-    for(int i=0; i<matrix1->n; i++){
-        a[i] = i+1;
+    int *a = (int *)malloc(matrix1->n * sizeof(int));
+    for(int i = 0; i < matrix1->n; i++){
+        a[i] = i + 1;
     }
-    isomorphicCheck(a, 0, matrix1->n-1, matrix2->matrix, matrix1->matrix, matrix1->n);
+
+    // finding bijection (if exists) recursively
+    isomorphicCheck(a, 0, matrix1->n - 1, matrix2->matrix, matrix1->matrix, matrix1->n);
+
+    // bijection doesnt exist
     printf("Not isomorphic\n");
     return 0;
 }
