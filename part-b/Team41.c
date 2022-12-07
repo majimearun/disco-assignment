@@ -120,19 +120,19 @@ void swap(int *a, int *b){
     *b = temp;
 }
 
-int findIndex(int *l, int elem){
-    for(int i = 0; i < sizeof(l); i++){
-        if(l[i] == elem){
+int findIndex(int *start, int elem){
+    for(int i = 0; i < sizeof(start); i++){
+        if(start[i] == elem){
             return i;
         }
     }
     return -1;
 }
 
-void isomorphicCheck(int *a, int l, int r, int **matrix1, int **matrix2, int n){
+void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, int n){
 
-    // when l == r we have reached the ending of the swaps so a permuation has been formed
-    if(l == r){
+    // when start == end we have reached the ending of the swaps so a permuation has been formed
+    if(start == end){
         int **newMatrix = (int **)malloc(n * sizeof(int *));
         for (int i = 0; i < n; i++)
         {
@@ -168,13 +168,13 @@ void isomorphicCheck(int *a, int l, int r, int **matrix1, int **matrix2, int n){
 
     }
     else{
-        for(int i = l; i <= r; i++){
+        for(int i = start; i <= end; i++){
             // swapping first element with each element of the array
-            swap((a+l), (a+i));
+            swap((a+start), (a+i));
             // conitnuing the permutation  for subsequent elements once earlier element is fixed
-            isomorphicCheck(a, l+1, r, matrix1, matrix2, n);
+            isomorphicCheck(a, start+1, end, matrix1, matrix2, n);
             // swapping back inital element to its original place
-            swap((a+l), (a+i));
+            swap((a+start), (a+i));
         }
     }
 }
