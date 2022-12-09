@@ -158,6 +158,9 @@ void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, i
                 }
             }
         }
+        
+
+
         if(matricesAreEqual(newMatrix, matrix2, n)){
             printf("Isomorphic\n");
             for(int i = 0; i < n; i++){
@@ -165,6 +168,11 @@ void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, i
             }
             exit(0);
         }
+        // free memory
+        for(int i = 0; i < n; i++){
+            free(newMatrix[i]);
+        }
+        free(newMatrix);
 
     }
     else{
@@ -199,10 +207,14 @@ int main(int argc, char **argv){
     for (int i = 0; i < matrix1->n; i++)
     {
         if(degree1[i] != degree2[i]){
+
             printf("Not isomorphic\n");
             exit(0);
         }
     }
+
+    free(degree1);
+    free(degree2);
 
     // setting node order for graph 2
     // initial order {1, 2, 3, 4, ..., n}
@@ -210,6 +222,9 @@ int main(int argc, char **argv){
     for(int i = 0; i < matrix1->n; i++){
         a[i] = i + 1;
     }
+    
+    printf("\n");
+
 
     // finding bijection (if exists) recursively
     isomorphicCheck(a, 0, matrix1->n - 1, matrix2->matrix, matrix1->matrix, matrix1->n);
