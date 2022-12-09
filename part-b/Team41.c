@@ -120,8 +120,8 @@ void swap(int *a, int *b){
     *b = temp;
 }
 
-int findIndex(int *start, int elem){
-    for(int i = 0; i < sizeof(start); i++){
+int findIndex(int *start, int elem, int n){
+    for(int i = 0; i < n; i++){
         if(start[i] == elem){
             return i;
         }
@@ -149,19 +149,21 @@ void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, i
             for(int j = 0; j < n; j++){
                 if(matrix1[i][j] == 1){
                     // finding new position of the row and column where the 1 has to be
-                    // in the new matrix 
+                    // in the new matrix
                     // this will be the position of the {index + 1} element in the permuation
                     // +1 because node count starts from 1, but index from 0
-                    int x = findIndex(a, i + 1);
-                    int y = findIndex(a, j + 1);
+                    int x = findIndex(a, i + 1, n);
+                    int y = findIndex(a, j + 1, n);
                     newMatrix[x][y] = 1;
+                    
                 }
             }
+            
         }
         
 
 
-        if(matricesAreEqual(newMatrix, matrix2, n)){
+        if(matricesAreEqual(newMatrix, matrix2, n)){;
             printf("Isomorphic\n");
             for(int i = 0; i < n; i++){
                 printf("%d %d\n", i + 1, a[i]);
@@ -173,6 +175,8 @@ void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, i
             free(newMatrix[i]);
         }
         free(newMatrix);
+
+        
 
     }
     else{
@@ -222,6 +226,7 @@ int main(int argc, char **argv){
     for(int i = 0; i < matrix1->n; i++){
         a[i] = i + 1;
     }
+
     
     printf("\n");
 
