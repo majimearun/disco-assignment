@@ -53,6 +53,10 @@ struct matrixDetails* createMatrxiFromFile(char *filename){
         fscanf(fp, "%d", &v);
         // subtracting 1 as indexes start from 0
         // set to 1 to show edge exists
+        if(u > n || v > n){
+            printf("%d %d is an invalid edge\n", u, v);
+            exit(0);
+        }
         matrix[u - 1][v - 1] = 1;
         matrix[v - 1][u - 1] = 1;
     }
@@ -130,7 +134,6 @@ int findIndex(int *start, int elem, int n){
 }
 
 void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, int n){
-
     // when start == end we have reached the ending of the swaps so a permuation has been formed
     if(start == end){
         int **newMatrix = (int **)malloc(n * sizeof(int *));
@@ -163,8 +166,8 @@ void isomorphicCheck(int *a, int start, int end, int **matrix1, int **matrix2, i
         
 
 
-        if(matricesAreEqual(newMatrix, matrix2, n)){;
-            printf("Isomorphic\n");
+        if(matricesAreEqual(newMatrix, matrix2, n)){
+            printf("Isomorphic.\n");
             for(int i = 0; i < n; i++){
                 printf("%d %d\n", i + 1, a[i]);
             }
@@ -201,7 +204,7 @@ int main(int argc, char **argv){
 
     // checking if the number of nodes and edges are the same
     if(matrix1->n != matrix2->n || matrix1->e != matrix2->e){
-        printf("Not isomorphic\n");
+        printf("Not Isomorphic.\n");
         exit(0);
     }
 
@@ -212,7 +215,7 @@ int main(int argc, char **argv){
     {
         if(degree1[i] != degree2[i]){
 
-            printf("Not isomorphic\n");
+            printf("Not Isomorphic.\n");
             exit(0);
         }
     }
@@ -227,14 +230,9 @@ int main(int argc, char **argv){
         a[i] = i + 1;
     }
 
-    
-    printf("\n");
-
-
     // finding bijection (if exists) recursively
     isomorphicCheck(a, 0, matrix1->n - 1, matrix2->matrix, matrix1->matrix, matrix1->n);
-
     // bijection doesnt exist
-    printf("Not isomorphic\n");
+    printf("Not Isomorphic, no bijection found.\n");
     return 0;
 }
